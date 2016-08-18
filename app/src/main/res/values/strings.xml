@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SharePictures</string>
+    <string name="letter_adress">Adress:</string>
+    <string name="letter_subject">Subject:</string>
+</resources>
