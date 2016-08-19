@@ -17,6 +17,7 @@ public class ShareFragment extends Fragment {
     @Override
     public void onCreate(Bundle  savedInstanceState){
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         if(NavUtils.getParentActivityName(getActivity())!=null){
             getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         }
