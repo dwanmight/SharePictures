@@ -1,6 +1,7 @@
 package com.junior.dwan.sharepictures;
 
 import android.app.ListFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -38,8 +39,10 @@ public class PictureListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l,View v,int position,long id){
 //        Letter letter=(Letter)getListAdapter().getItem(position);
-        Letter letter=((LetterAdapter)getListAdapter()).getItem(position);
-        Log.i(TAG, "Was clicked " + position + " " + letter.getUUID());
+//        Letter letter=((LetterAdapter)getListAdapter()).getItem(position);
+//        Log.i(TAG, "Was clicked " + position + " " + letter.getUUID());
+        Intent i=new Intent(getActivity(),ShareActivity.class);
+        startActivity(i);
 
 
 
