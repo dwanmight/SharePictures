@@ -6,24 +6,24 @@
     <TextView
         android:layout_width="60dp"
         android:layout_height="wrap_content"
-        android:text="@string/letter_adress"
-        android:id="@+id/tvAdress"
+        android:text="@string/letter_address"
+        android:id="@+id/tvAddress"
         android:layout_margin="10dp"
-        android:textSize="16sp"/>
+        android:textSize="15sp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tvEmailAdress"
-        android:text="Some text"
-        android:layout_toRightOf="@id/tvAdress"
+        android:text=""
+        android:layout_toRightOf="@id/tvAddress"
         android:layout_margin="10dp"
         android:textSize="16sp"
-        android:textStyle="bold"/>
+        android:textStyle="italic"/>
     <TextView
         android:layout_width="60dp"
         android:layout_height="wrap_content"
         android:id="@+id/tvSubject"
-        android:layout_below="@id/tvAdress"
+        android:layout_below="@id/tvAddress"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:text="@string/letter_subject"
@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tvSubjectText"
-        android:text="Some subject"
+        android:text=""
         android:layout_toRightOf="@id/tvSubject"
         android:layout_below="@id/tvEmailAdress"
         android:layout_marginLeft="10dp"
