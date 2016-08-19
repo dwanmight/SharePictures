@@ -1,14 +1,14 @@
 package com.junior.dwan.sharepictures;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 
 /**
  * Created by Might on 18.08.2016.
  */
-public abstract class SingleFragmentActivity extends FragmentActivity {
+public abstract class SingleFragmentActivity extends Activity {
     protected abstract Fragment createFragment();
 
     @Override
