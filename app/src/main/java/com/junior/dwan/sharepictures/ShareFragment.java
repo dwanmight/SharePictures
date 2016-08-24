@@ -1,6 +1,7 @@
 package com.junior.dwan.sharepictures;
 
 import android.app.Fragment;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
@@ -21,6 +22,8 @@ public class ShareFragment extends Fragment {
         if(NavUtils.getParentActivityName(getActivity())!=null){
             getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
         }
+//        getActivity().getActionBar().setDisplayUseLogoEnabled(false);
+        getActivity().getActionBar().setIcon(new ColorDrawable(0));
     }
 
     @Override

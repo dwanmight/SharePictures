@@ -2,6 +2,7 @@ package com.junior.dwan.sharepictures;
 
 import android.app.ListFragment;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +25,7 @@ public class PictureListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle("Drafts and sent messages");
+        getActivity().getActionBar().setIcon(new ColorDrawable(0));
         mLetters=LetterLab.getInstance(getActivity()).getLetters();
 
 //        ArrayAdapter<Letter> adapter =
