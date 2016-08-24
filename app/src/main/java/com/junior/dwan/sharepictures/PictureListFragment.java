@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -24,6 +27,7 @@ public class PictureListFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         getActivity().setTitle("Drafts and sent messages");
         getActivity().getActionBar().setIcon(new ColorDrawable(0));
         mLetters=LetterLab.getInstance(getActivity()).getLetters();
@@ -72,6 +76,12 @@ public class PictureListFragment extends ListFragment {
             return convertView;
 
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu,MenuInflater inflater){
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_menu_bar,menu);
     }
 }
 
