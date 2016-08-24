@@ -10,4 +10,8 @@
     <string name="share_enter_address">Enter email address</string>
     <string name="share_enter_subjects">Enter subjects</string>
     <string name="share_enter_text">Enter you text</string>
+
+    <string name="menu_add_letter">Add letter</string>
+    <string name="menu_delete_letter">Delete letter</string>
+    <string name="menu_back">Back</string>
 </resources>
