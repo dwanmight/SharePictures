@@ -14,4 +14,7 @@
     <string name="menu_add_letter">New letter</string>
     <string name="menu_delete_letter">Delete letter</string>
     <string name="menu_back">Back</string>
+
+    <string name="digit_keyboard_font_tatiana">fonts/TatianaCTTNormal.ttf</string>
+
 </resources>
