@@ -20,5 +20,12 @@
     <string name="digit_keyboard_font_toms">fonts/toms.ttf</string>
     <string name="digit_keyboard_font_roman">fonts/roman.ttf</string>
     <string name="menu_delete_all_letters">Delete all letter</string>
+    <string name="dialog_delete_all_title">Remove all letters?</string>
+    <string name="dialog_delete_all_yes">Yes</string>
+    <string name="dialog_delete_all_no">No</string>
+    <string name="dialog_photo_camera">Camera</string>
+    <string name="dialog_photo_gallery">Gallery Photo</string>
+    <string name="dialog_photo_cancel">Cancel</string>
+    <string name="snackbar_msg_turn_internet">Turn on your internet connection</string>
 
 </resources>
