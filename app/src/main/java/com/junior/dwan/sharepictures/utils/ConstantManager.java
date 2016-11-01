@@ -4,7 +4,7 @@ package com.junior.dwan.sharepictures.utils;
  * Created by Might on 23.09.2016.
  */
 public interface ConstantManager {
-    int REQUEST_DIALOG_CHOOSE_PHOTO= 400;
+    int REQUEST_DIALOG_CHOOSE_PHOTO = 400;
     int REQUEST_GALLERY = 100;
     int REQUEST_CAMERA = 200;
     int REQUEST_DELETE_ALL = 300;
@@ -21,7 +21,6 @@ public interface ConstantManager {
     String JSON_PHOTO_URI = "JSON_PHOTO_URI";
     String FILENAME = "letters.json";
 
-    String PREF_NAME = "my_pref";
     String PREF_CAMERA = "PREF_CAMERA";
-    String PREF_DIALOG_DELETE_ALL="PREF_DIALOG_DELETE_ALL";
+    String PREF_DIALOG_DELETE_ALL = "PREF_DIALOG_DELETE_ALL";
 }
