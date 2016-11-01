@@ -24,12 +24,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.junior.dwan.sharepictures.R;
 import com.junior.dwan.sharepictures.data.managers.Letter;
 import com.junior.dwan.sharepictures.data.managers.LetterLab;
 import com.junior.dwan.sharepictures.ui.dialogs.LoadPhotoDialog;
 import com.junior.dwan.sharepictures.utils.ConstantManager;
+import com.junior.dwan.sharepictures.utils.ValidateEditText;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -72,8 +74,10 @@ public class ShareFragment extends Fragment {
         setupToolbar();
         initializeEditTextAndAddListener(v);
         initializeButtonsAndListener(v);
+        checkTextForFields();
         return v;
     }
+
 
     private void initializeButtonsAndListener(View v) {
         mImageView = (ImageView) v.findViewById(R.id.imgView_Photo);
@@ -96,17 +100,9 @@ public class ShareFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (isOnline()) {
-                    if (mEmail.length() != 0) {
-                        sendEmail();
-                    } else {
-                        mSnackbar = Snackbar.make(getView(), "Write email address", Snackbar.LENGTH_LONG);
-                        mSnackbar.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorSnackBar));
-                        mSnackbar.show();
-                    }
+                    sendEmail();
                 } else {
-                    mSnackbar = Snackbar.make(getView(), "Turn on your internet connection", Snackbar.LENGTH_LONG);
-                    mSnackbar.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorSnackBar));
-                    mSnackbar.show();
+                    showSnackBar("Turn on your internet connection");
                 }
             }
         });
@@ -122,13 +118,11 @@ public class ShareFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mLetter.setEmail(s.toString());
-                Log.i("TAGTAG",s.toString());
 
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                Log.i("TAGTAG",s.toString()+"editable");
             }
         });
         mSubject = (EditText) v.findViewById(R.id.etSubjects);
@@ -166,6 +160,20 @@ public class ShareFragment extends Fragment {
         });
     }
 
+    private void checkTextForFields() {
+        if (mLetter.getEmail() != null) {
+            mEmail.setText(mLetter.getEmail());
+        }
+
+        if (mLetter.getSubject() != null) {
+            mSubject.setText(mLetter.getSubject());
+        }
+
+        if (mLetter.getEmailMessage() != null) {
+            mEmailMessage.setText(mLetter.getEmailMessage());
+        }
+    }
+
     private void setupToolbar() {
         Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_back);
@@ -176,14 +184,20 @@ public class ShareFragment extends Fragment {
 
     private void sendEmail() {
         Intent sendEmailIntent = new Intent(Intent.ACTION_SEND);
-        sendEmailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{mEmail.getText().toString()});
-        sendEmailIntent.putExtra(Intent.EXTRA_SUBJECT, mSubject.getText().toString());
-        sendEmailIntent.setType("message/rfc822");
-        if (mLetter.getPhotoUri() != null) {
-            sendEmailIntent.setType("image/*");
-            sendEmailIntent.putExtra(Intent.EXTRA_STREAM, mLetter.getPhotoUri());
+        if (ValidateEditText.isEmailValid(mEmail.getText())) {
+            sendEmailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{mEmail.getText().toString()});
+            sendEmailIntent.putExtra(Intent.EXTRA_SUBJECT, mSubject.getText().toString());
+            sendEmailIntent.setType("message/rfc822");
+            if (mLetter.getPhotoUri() != null) {
+                sendEmailIntent.setType("image/*");
+                sendEmailIntent.putExtra(Intent.EXTRA_STREAM, mLetter.getPhotoUri());
+            }
+            startActivity(Intent.createChooser(sendEmailIntent, "Choose an email client: "));
+        } else {
+            showSnackBar("Please enter a valid address");
+
         }
-        startActivity(Intent.createChooser(sendEmailIntent, "choose an email client: "));
+
     }
 
     protected boolean isOnline() {
@@ -200,47 +214,32 @@ public class ShareFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mLoadPhotoDialog.onActivityResult(requestCode, resultCode, data);
-        Log.i("TAGTAG", "RESULT");
 
         switch (requestCode) {
             case ConstantManager.REQUEST_GALLERY: {
                 System.out.println(resultCode);
                 if (resultCode == Activity.RESULT_OK && data != null) {
-                    UUID letterId = (UUID) getArguments().getSerializable(ConstantManager.EXTRA_LETTER_ID);
-                    mLetter = LetterLab.getInstance(getActivity()).getLetter(letterId);
                     mLetter.setPhotoUri(data.getData());
-                    Picasso.with(getActivity())
-                            .load(mLetter.getPhotoUri())
-                            .into(mImageView);
-                    System.out.println(data.getData());
-                    System.out.println("loaded");
-                    ArrayList<Letter> mLetters=LetterLab
-                            .getInstance(getActivity()).getLetters();
-                    for (Letter l :mLetters){
-                        System.out.println(l.getPhotoUri());
-                    }
-
+                    putImageIntoView();
                 }
             }
             break;
             case ConstantManager.REQUEST_CAMERA: {
                 System.out.println(resultCode);
                 if (resultCode == Activity.RESULT_OK) {
-                    Log.i("TAGTAG", "ok");
-                    String s = getActivity().getSharedPreferences(ConstantManager.PREF_NAME, Context.MODE_PRIVATE).getString(ConstantManager.PREF_CAMERA, "");
-                    UUID letterId = (UUID) getArguments().getSerializable(ConstantManager.EXTRA_LETTER_ID);
-                    mLetter = LetterLab.getInstance(getActivity()).getLetter(letterId);
+                    String s = LetterLab.getInstance(getActivity()).getPreferencesManager().loadCaptureFromDialog();
                     mLetter.setPhotoUri(Uri.parse(s));
-
-                    Picasso.with(getActivity())
-                            .load(mLetter.getPhotoUri())
-                            .into(mImageView);
-
-
+                    putImageIntoView();
                     break;
                 }
             }
         }
+    }
+
+    private void putImageIntoView() {
+        Picasso.with(getActivity())
+                .load(mLetter.getPhotoUri())
+                .into(mImageView);
     }
 
     @Override
@@ -263,8 +262,13 @@ public class ShareFragment extends Fragment {
                 }
                 return true;
         }
-
         return true;
+    }
+
+    private void showSnackBar(String msg) {
+        mSnackbar = Snackbar.make(getView(), msg, Snackbar.LENGTH_LONG);
+        mSnackbar.getView().setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorSnackBar));
+        mSnackbar.show();
     }
 
     @Override
