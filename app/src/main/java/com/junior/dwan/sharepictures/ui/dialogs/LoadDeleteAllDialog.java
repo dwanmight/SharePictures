@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,15 +18,12 @@ import com.junior.dwan.sharepictures.utils.ConstantManager;
  */
 
 public class LoadDeleteAllDialog extends DialogFragment {
-    SharedPreferences mSharedPreferences;
 
     private void sendResult(int resultCode) {
         if (getTargetFragment() == null)
             return;
-
         Intent i = new Intent();
         i.putExtra(ConstantManager.PREF_DIALOG_DELETE_ALL, true);
-
         getTargetFragment()
                 .onActivityResult(getTargetRequestCode(), resultCode, i);
     }
@@ -35,23 +31,19 @@ public class LoadDeleteAllDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        mSharedPreferences=getActivity().getSharedPreferences(ConstantManager.PREF_NAME, Context.MODE_PRIVATE);
-
-        System.out.println("Dialog");
-        String[] selectItems = {"Yes", "No"};
+        String[] selectItems = {getString(R.string.dialog_delete_all_yes), getString(R.string.dialog_delete_all_no)};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("          Remove all letters?");
+        builder.setTitle(R.string.dialog_delete_all_title);
         builder.setItems(selectItems, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
+                    //pressed yes
                     case 0:
-                        System.out.println("deleted all");
                         sendResult(Activity.RESULT_OK);
                         break;
+                    //pressed no
                     case 1:
-                        System.out.println("deleted false");
-
                         break;
                 }
             }

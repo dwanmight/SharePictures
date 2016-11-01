@@ -28,7 +28,6 @@ public class Letter {
 
     public Letter(JSONObject json) throws JSONException {
         mUUID = UUID.fromString(json.getString(ConstantManager.JSON_ID));
-//        System.out.println("JSON EMAIL"+json.getString(ConstantManager.JSON_EMAIL));
         mEmail = json.getString(ConstantManager.JSON_EMAIL);
         mSubject = json.getString(ConstantManager.JSON_SUBJECT);
         mEmailMessage = json.getString(ConstantManager.JSON_EMAIL_MESSAGE);
@@ -40,18 +39,18 @@ public class Letter {
     public JSONObject toJSON() throws JSONException {
         JSONObject json = new JSONObject();
         json.put(ConstantManager.JSON_ID, mUUID.toString());
-        if(mEmail!=null){
+        if (mEmail != null) {
             json.put(ConstantManager.JSON_EMAIL, mEmail);
         } else {
             json.put(ConstantManager.JSON_EMAIL, "No email");
         }
-        if (mSubject!=null) {
+        if (mSubject != null) {
             json.put(ConstantManager.JSON_SUBJECT, mSubject);
         } else {
             json.put(ConstantManager.JSON_SUBJECT, "No Subject");
 
         }
-        if (mEmailMessage!=null) {
+        if (mEmailMessage != null) {
             json.put(ConstantManager.JSON_EMAIL_MESSAGE, mEmailMessage);
         } else {
             json.put(ConstantManager.JSON_EMAIL_MESSAGE, "No text");

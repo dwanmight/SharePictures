@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,8 +11,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
+import com.junior.dwan.sharepictures.R;
+import com.junior.dwan.sharepictures.data.managers.LetterLab;
 import com.junior.dwan.sharepictures.utils.ConstantManager;
 
 import java.io.File;
@@ -31,7 +31,6 @@ public class LoadPhotoDialog extends DialogFragment {
     public static LoadPhotoDialog newInstance(Uri uri) {
         Bundle args = new Bundle();
         args.putSerializable(ConstantManager.EXTRA_PHOTO_FROM_GALLERY, uri.toString());
-
         LoadPhotoDialog fragment = new LoadPhotoDialog();
         fragment.setArguments(args);
 
@@ -41,8 +40,8 @@ public class LoadPhotoDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        System.out.println("Dialog");
-        String[] selectItems = {"Camera", "Gallery Photo", "Cancel"};
+        String[] selectItems = {getString(R.string.dialog_photo_camera)
+                , getString(R.string.dialog_photo_gallery), getString(R.string.dialog_photo_cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setItems(selectItems, new DialogInterface.OnClickListener() {
             @Override
@@ -65,21 +64,21 @@ public class LoadPhotoDialog extends DialogFragment {
 
     private void loadFromCamera() {
         Intent loadFromCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Log.i("TAGTAG", "intent load");
         try {
             mPhotoFile = createFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
         loadFromCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhotoFile));
-        getActivity().getSharedPreferences(ConstantManager.PREF_NAME, Context.MODE_PRIVATE).edit().putString(ConstantManager.PREF_CAMERA, Uri.fromFile(mPhotoFile).toString()).apply();
+        LetterLab.getInstance(getActivity()).getPreferencesManager().saveCaptureFromDialog(mPhotoFile);
         getActivity().startActivityForResult(loadFromCameraIntent, ConstantManager.REQUEST_CAMERA);
     }
 
     private void loadFromGallery() {
         Intent loadFromGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         loadFromGalleryIntent.setType("image/*");
-        getActivity().startActivityForResult(Intent.createChooser(loadFromGalleryIntent, "Выберите фото"), ConstantManager.REQUEST_GALLERY);
+        getActivity().startActivityForResult(Intent.createChooser(loadFromGalleryIntent, "Выберите фото")
+                , ConstantManager.REQUEST_GALLERY);
     }
 
     private File createFile() throws IOException {

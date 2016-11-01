@@ -19,8 +19,10 @@ public class LetterLab {
     private ArrayList<Letter> mLetters;
     private JSONSerializer mSerializer;
     private Context mAppContext;
+    PreferencesManager mPreferencesManager;
 
     private LetterLab(Context appContext) {
+        this.mPreferencesManager = new PreferencesManager();
         mAppContext = appContext;
         mLetters = new ArrayList<Letter>();
         mSerializer = new JSONSerializer(mAppContext, ConstantManager.FILENAME);
@@ -32,18 +34,16 @@ public class LetterLab {
             mLetters = new ArrayList<Letter>();
             Log.e(TAG, "Error loading crimes: ", e);
         }
-//        for (int i = 0; i <100 ; i++) {
-//            Letter l=new Letter();
-//            l.setEmail("email "+i);
-//            l.setSubject("subject " + i);
-//            mLetters.add(l);
-//        }
     }
 
     public static LetterLab getInstance(Context c) {
         if (sLetterLab == null)
             sLetterLab = new LetterLab(c.getApplicationContext());
         return sLetterLab;
+    }
+
+    public PreferencesManager getPreferencesManager() {
+        return mPreferencesManager;
     }
 
     public Letter getLetter(UUID uuid) {

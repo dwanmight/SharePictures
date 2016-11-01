@@ -23,7 +23,6 @@ import com.junior.dwan.sharepictures.ui.activities.ShareActivity;
 import com.junior.dwan.sharepictures.ui.dialogs.LoadDeleteAllDialog;
 import com.junior.dwan.sharepictures.utils.ConstantManager;
 
-
 import java.util.ArrayList;
 
 /**
@@ -49,7 +48,7 @@ public class PictureListFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        // Получение объекта Crime от адаптера
+        // Получение объекта Letter от адаптера
         Letter letter = ((LetterAdapter) getListAdapter()).getItem(position);
         // Запуск ShareActivity
         Intent i = new Intent(getActivity(), ShareActivity.class);
@@ -63,7 +62,6 @@ public class PictureListFragment extends ListFragment {
         View v = inflater.inflate(R.layout.empty_list, null, false);
         Button empty_list_add_crimeButton = (Button) v.findViewById(android.R.id.empty);
         empty_list_add_crimeButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 Letter l = new Letter();
@@ -88,9 +86,6 @@ public class PictureListFragment extends ListFragment {
                 convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_letter, null);
 
             // Настройка представления для объекта Crime
-            for (Letter l :mLetters){
-                System.out.println(l.getUUID().toString()+"="+l.getPhotoUri());
-            }
             Letter l = getItem(position);
             ImageView poster = (ImageView) convertView.findViewById(R.id.letter_imageView);
 
@@ -98,7 +93,7 @@ public class PictureListFragment extends ListFragment {
                 if (l.getPhotoUri() != null) {
                     poster.setImageURI(l.getPhotoUri());
                     poster.setScaleType(ImageView.ScaleType.FIT_XY);
-                } else{
+                } else {
                     poster.setBackgroundResource((R.drawable.ic_camera_alt_black_24dp));
                     poster.setScaleType(ImageView.ScaleType.CENTER);
                 }
@@ -116,13 +111,6 @@ public class PictureListFragment extends ListFragment {
             }
             return convertView;
         }
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        ((LetterAdapter) getListAdapter()).notifyDataSetChanged();
     }
 
     @Override
@@ -162,6 +150,12 @@ public class PictureListFragment extends ListFragment {
             LetterLab.getInstance(getActivity()).deleteAllCrime(mLetters);
             setAdapterForList();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((LetterAdapter) getListAdapter()).notifyDataSetChanged();
     }
 }
 
