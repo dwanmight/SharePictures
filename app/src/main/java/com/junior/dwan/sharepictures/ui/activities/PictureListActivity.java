@@ -1,7 +1,9 @@
 package com.junior.dwan.sharepictures.ui.activities;
 
 import android.app.Fragment;
+import android.content.Intent;
 
+import com.junior.dwan.sharepictures.R;
 import com.junior.dwan.sharepictures.ui.fragments.PictureListFragment;
 
 /**
@@ -13,4 +15,5 @@ public class PictureListActivity extends SingleFragmentActivity {
     protected Fragment createFragment(){
         return new PictureListFragment();
     }
+
 }

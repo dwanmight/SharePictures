@@ -3,9 +3,9 @@
     <item android:state_pressed="false">
         <shape android:shape="oval">
             <solid
-                android:color="@color/colorBackground"/>
+                android:color="@color/colorBackgroundButton"/>
             <stroke
-                android:color="#FFFFFF"
+                android:color="@color/colorWhite"
             android:width="2dp"/>
 
         </shape>
@@ -13,9 +13,9 @@
     <item android:state_pressed="true">
         <shape android:shape="oval">
             <solid
-                android:color="#FFFFFF"/>
+                android:color="@color/colorWhite"/>
             <stroke
-                android:color="@color/colorBackground"
+                android:color="@color/colorBackgroundButton"
                 android:width="2dp"/>
 
 

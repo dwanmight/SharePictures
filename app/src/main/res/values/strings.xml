@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SharePictures</string>
+    <string name="app_name">ShareLetter</string>
     <string name="letter_address">Address:</string>
     <string name="letter_subject">Subject:</string>
     <string name="share_email">E-mail:</string>
@@ -16,5 +16,9 @@
     <string name="menu_back">Back</string>
 
     <string name="digit_keyboard_font_tatiana">fonts/TatianaCTTNormal.ttf</string>
+    <string name="digit_keyboard_font_tagir">fonts/tagir.ttf</string>
+    <string name="digit_keyboard_font_toms">fonts/toms.ttf</string>
+    <string name="digit_keyboard_font_roman">fonts/roman.ttf</string>
+    <string name="menu_delete_all_letters">Delete all letter</string>
 
 </resources>

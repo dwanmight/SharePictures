@@ -27,9 +27,9 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
+        TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
         setSupportActionBar(toolbar);
-//        customizeToolbar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         FragmentManager fragmentManager=getFragmentManager();
         Fragment fragment=fragmentManager.findFragmentById(R.id.fragment_container);
@@ -37,31 +37,5 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
             fragment= createFragment();
             fragmentManager.beginTransaction().add(R.id.fragment_container,fragment).commit();
         }
-    }
-
-    public void customizeToolbar(Toolbar toolbar) {
-        // Save current title and subtitle
-        final CharSequence originalTitle = toolbar.getTitle();
-        // Temporarily modify title and subtitle to help detecting each
-        toolbar.setTitle("title");
-
-        View view = toolbar.getChildAt(0);
-
-        if(view instanceof TextView){
-            TextView textView = (TextView) view;
-
-            if(textView.getText().equals("title")){
-                // Customize title's TextView
-                Toolbar.LayoutParams params = new Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT);
-                params.gravity = Gravity.CENTER_HORIZONTAL;
-                textView.setLayoutParams(params);
-
-                // Apply custom font
-                Typeface typeface = Typeface.createFromAsset(getAssets(), getString(R.string.digit_keyboard_font_tatiana));
-                textView.setTypeface(typeface);
-            }
-        }
-        // Restore title and subtitle
-        toolbar.setTitle(originalTitle);
     }
 }

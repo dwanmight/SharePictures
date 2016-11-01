@@ -1,9 +1,10 @@
-package com.junior.dwan.sharepictures.ui.data.managers;
+package com.junior.dwan.sharepictures.ui.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,8 +12,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
-import com.junior.dwan.sharepictures.ui.utils.ConstantManager;
+import com.junior.dwan.sharepictures.utils.ConstantManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,17 +28,15 @@ import java.util.Date;
 public class LoadPhotoDialog extends DialogFragment {
     private File mPhotoFile;
 
-    public static LoadPhotoDialog newInstance(Uri uri){
-        Bundle args=new Bundle();
+    public static LoadPhotoDialog newInstance(Uri uri) {
+        Bundle args = new Bundle();
         args.putSerializable(ConstantManager.EXTRA_PHOTO_FROM_GALLERY, uri.toString());
 
-        LoadPhotoDialog fragment=new LoadPhotoDialog();
+        LoadPhotoDialog fragment = new LoadPhotoDialog();
         fragment.setArguments(args);
 
         return fragment;
     }
-
-
 
     @NonNull
     @Override
@@ -50,7 +50,6 @@ public class LoadPhotoDialog extends DialogFragment {
                 switch (which) {
                     case 0:
                         loadFromCamera();
-                        System.out.println("feature");
                         break;
                     case 1:
                         loadFromGallery();
@@ -61,41 +60,41 @@ public class LoadPhotoDialog extends DialogFragment {
             }
         });
 
-
         return builder.create();
     }
 
     private void loadFromCamera() {
-        Intent loadFromCameraIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent loadFromCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Log.i("TAGTAG", "intent load");
         try {
-            mPhotoFile=createFile();
+            mPhotoFile = createFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        loadFromCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(mPhotoFile));
-       getActivity(). startActivityForResult(loadFromCameraIntent,ConstantManager.REQUEST_CAMERA);
+        loadFromCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mPhotoFile));
+        getActivity().getSharedPreferences(ConstantManager.PREF_NAME, Context.MODE_PRIVATE).edit().putString(ConstantManager.PREF_CAMERA, Uri.fromFile(mPhotoFile).toString()).apply();
+        getActivity().startActivityForResult(loadFromCameraIntent, ConstantManager.REQUEST_CAMERA);
     }
 
     private void loadFromGallery() {
-        Intent loadFromGalleryIntent=new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent loadFromGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         loadFromGalleryIntent.setType("image/*");
         getActivity().startActivityForResult(Intent.createChooser(loadFromGalleryIntent, "Выберите фото"), ConstantManager.REQUEST_GALLERY);
     }
 
-    private File createFile() throws IOException{
-        String timeStamp=new SimpleDateFormat("yyyyMMdd:HHmmss").format(new Date());
-        String imageFileName="JPEG_"+timeStamp+"_";
-        File fileDirection= Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+    private File createFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd:HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File fileDirection = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
-        File image=File.createTempFile(imageFileName, ".jpg", fileDirection);
+        File image = File.createTempFile(imageFileName, ".jpg", fileDirection);
 
-        ContentValues cv=new ContentValues();
-        cv.put(MediaStore.Images.Media.DATE_TAKEN,System.currentTimeMillis());
+        ContentValues cv = new ContentValues();
+        cv.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
         cv.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
         cv.put(MediaStore.MediaColumns.DATA, image.getAbsolutePath());
 
-        getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,cv);
+        getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, cv);
         return image;
     }
-
 }
